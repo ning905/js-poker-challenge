@@ -84,11 +84,6 @@ const getPairValue = (thisPair) => {
   return thisPairValue
 }
 
-const getThreeCardsValue = (threeCards) => {
-  const threeCardsValue = getFirstCardValue(threeCards) * 3
-  return threeCardsValue
-}
-
 const storeBiggerCards = (value, cards, valueToCompare, cardsToCompare) => {
   const CARDS = {
     VALUE: value,
@@ -143,29 +138,13 @@ class Poker {
 
   winning3CardHand(cardArray) {
     let theWinningCards = []
-    let biggestCardsValue = 0
     const available3OfAKind = cardArray.filter(is3OfAKind)
     const numOf3OfAKind = available3OfAKind.length
 
-    for (let i = 0; i < cardArray.length; i++) {
-
-      if (numOf3OfAKind > 0) {
-        for (let j = 0; j < numOf3OfAKind; j++) {
-          const theseThreeCardsValue = getThreeCardsValue(available3OfAKind[j])
-
-          const THE_WINING_CARDS = storeBiggerCards(
-            biggestCardsValue,
-            theWinningCards,
-            theseThreeCardsValue,
-            available3OfAKind[j]
-          )
-
-          biggestCardsValue = THE_WINING_CARDS.VALUE
-          theWinningCards = THE_WINING_CARDS.CARDS
-        }
-      } else {
-        theWinningCards = this.winningPairFromArray(cardArray)
-      }
+    if (numOf3OfAKind > 0) {
+      theWinningCards = this.winningPairFromArray(available3OfAKind)
+    } else {
+      theWinningCards = this.winningPairFromArray(cardArray)
     }
     return theWinningCards
   }
